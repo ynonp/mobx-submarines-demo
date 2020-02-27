@@ -1,5 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
+import board from "./lib/submarines";
+
 import './App.css';
 
 function App() {
@@ -22,5 +24,7 @@ function App() {
     </div>
   );
 }
+
+(window as any).board = board;
 
 export default App;
