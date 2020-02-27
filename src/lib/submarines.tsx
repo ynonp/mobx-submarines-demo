@@ -1,4 +1,5 @@
-import {action, computed, observable} from "mobx"
+import {action, computed, observable} from "mobx";
+import { computedFn } from "mobx-utils";
 import _ from "lodash";
 
 type Point = [number, number];
@@ -18,13 +19,14 @@ export class BoardSquare {
         this.revealed = true;
     }
 
-    @computed get repr() {
+    repr = computedFn(function repr(this: BoardSquare) {
         if (this.revealed) {
             return this.item.repr();
         } else {
             return " ";
         }
-    }
+
+    });
 }
 
 export class Board {

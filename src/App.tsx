@@ -14,10 +14,9 @@ const Square = observer(function Square({ item }: { item?: BoardSquare }) {
         item?.bomb();
     }
 
-    // return <span onClick={handleClick}>{item.repr}</span>;
     return (
         <td onClick={handleClick}>
-            {item.repr}
+            {item.repr()}
         </td>
     );
 });
