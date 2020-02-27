@@ -1,11 +1,12 @@
+import {action, computed, observable} from "mobx"
 import _ from "lodash";
 
 type Point = [number, number];
 
-class BoardSquare {
-    item: Submarine|Sea;
-    id: number;
-    revealed: boolean = false;
+export class BoardSquare {
+    @observable item: Submarine|Sea;
+    @observable id: number;
+    @observable revealed: boolean = false;
 
     constructor(item: Sea|Submarine, id: number) {
         this.item = item;
@@ -17,7 +18,7 @@ class BoardSquare {
         this.revealed = true;
     }
 
-    repr() {
+    @computed get repr() {
         if (this.revealed) {
             return this.item.repr();
         } else {
@@ -27,9 +28,9 @@ class BoardSquare {
 }
 
 export class Board {
-    data: Map<string, BoardSquare> = new Map();
-    rowCount: number = 0;
-    columnCount: number = 0;
+    @observable data: Map<string, BoardSquare> = new Map();
+    rowCount: number;
+    columnCount: number;
 
     constructor(rowCount: number, columnCount: number) {
         this.rowCount = rowCount;
@@ -75,7 +76,7 @@ export class Board {
                 if (square == null) {
                     throw new Error("Invalid Board");
                 }
-                res += square.repr();
+                res += square.repr;
             }
             res += "\n";
         }
@@ -93,8 +94,8 @@ class Sea {
 
 abstract class Submarine extends Sea {
     size: number;
-    bombed: Set<number> = new Set();
-    sank: boolean = false;
+    @observable bombed: Set<number> = new Set();
+    @observable sank: boolean = false;
 
     abstract getCoordinates(row: number, column: number): Point [];
 
@@ -133,5 +134,7 @@ export class HorizontalSubmarine extends Submarine {
 }
 
 const b = new Board(10, 10);
-
+b.addSubmarine(new HorizontalSubmarine(5), 0, 0);
+b.addSubmarine(new VerticalSubmarine(3), 2, 5);
+b.addSubmarine(new HorizontalSubmarine(2), 6, 0);
 export default b;

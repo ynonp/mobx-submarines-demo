@@ -1,26 +1,50 @@
 import React from 'react';
-import logo from './logo.svg';
-import board from "./lib/submarines";
+import { observer } from "mobx-react"
+import board, { BoardSquare } from "./lib/submarines";
+import _ from "lodash";
 
 import './App.css';
+
+const Square = observer(function Square({ item }: { item?: BoardSquare }) {
+    if (!item) {
+        throw new Error("Item cannot be null");
+    }
+
+    function handleClick() {
+        item?.bomb();
+    }
+
+    // return <span onClick={handleClick}>{item.repr}</span>;
+    return (
+        <td onClick={handleClick}>
+            {item.repr}
+        </td>
+    );
+});
+
+const SubmarineGame = observer(function SubmarineGame() {
+    return (
+        <div>
+            <table>
+                <tbody>
+                {_.range(board.rowCount).map(rowIndex => (
+                    <tr key={rowIndex}>
+                        {_.range(board.columnCount).map(colIndex => (
+                          <Square key={colIndex} item={board.cellAt([rowIndex, colIndex])} />
+                        ))}
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+
+        </div>
+    );
+});
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <SubmarineGame />
     </div>
   );
 }
