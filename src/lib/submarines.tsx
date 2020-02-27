@@ -26,7 +26,7 @@ class BoardSquare {
     }
 }
 
-class Board {
+export class Board {
     data: Map<string, BoardSquare> = new Map();
     rowCount: number = 0;
     columnCount: number = 0;
@@ -120,27 +120,18 @@ abstract class Submarine extends Sea {
     }
 }
 
-class VerticalSubmarine extends Submarine {
+export class VerticalSubmarine extends Submarine {
     getCoordinates(row: number, column: number) {
         return _.range(this.size).map((i): Point => ([row + i, column]));
     }
 }
 
-class HorizontalSubmarine extends Submarine {
+export class HorizontalSubmarine extends Submarine {
     getCoordinates(row: number, column: number) {
         return _.range(this.size).map((i): Point => ([row, column + i]));
     }
 }
 
 const b = new Board(10, 10);
-
-const s1 = new VerticalSubmarine(5);
-const s2 = new HorizontalSubmarine(3);
-b.addSubmarine(s1, 0, 0);
-b.addSubmarine(s2, 5, 5);
-
-b.bomb([5, 5]);
-b.bomb([5, 6]);
-b.bomb([5, 7]);
 
 export default b;
